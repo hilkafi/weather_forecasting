@@ -10,7 +10,7 @@ import { loadUser } from '../actions/auth';
 
 import Login from './accounts/Login';
 import Register from './accounts/Register';
-import PrivateRoute from './common/PrivateRoute';
+import PrivateRoute from './common/PrivateRoute'
 
 class App extends Component{
 
