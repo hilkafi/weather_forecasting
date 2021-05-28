@@ -14,6 +14,12 @@ class Dashboard extends Component {
         cities: cities
     }
 
+    styles = {
+        style1: {color: '#808080', fontWeight: 400},
+        fontWeight4: {fontWeight: 400}
+
+    }
+
 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
@@ -37,7 +43,11 @@ class Dashboard extends Component {
         var hour = a.getHours();
         var min = a.getMinutes();
         var sec = a.getSeconds();
-        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        var ampm = hour < 12 || hour === 24 ? 'AM' : 'PM';
+        hour = hour % 12;
+        hour = hour ? hour : 12; // the hour '0' should be '12'
+        min = min < 10 ? '0' + min : min;
+        var time = this.timeConvertToDay(UNIX_timestamp)+ ' ' + hour + ':' + min + ' ' + ampm
         return time;
     }
 
@@ -59,7 +69,7 @@ class Dashboard extends Component {
     }
 
     kelvinToCelcius = temp => {
-        return parseFloat(temp - 273.15).toFixed(1)
+        return Math.round(temp - 273.15)
     }
 
     meterSecToKiloHour = wind => {
@@ -78,17 +88,17 @@ class Dashboard extends Component {
                     <div className="col-md-3 weather_card" key={day.dt}>
                         <div className="card card-body shadow p-3 mb-5 bg-white rounded">
                             <div className="row">
-                                <h6 className="col-sm-6">{this.timeConvertToDay(day.dt)}</h6>
-                                <h6 className="col-sm-6 text-right">{this.timeConvertToDate(day.dt)}</h6>
+                                <h6 style={this.styles.style1} className="col-sm-6">{this.timeConvertToDay(day.dt)}</h6>
+                                <h6 style={this.styles.style1} className="col-sm-6 text-right">{this.timeConvertToDate(day.dt)}</h6>
                             </div>
                             <div className="row py-2 text-center">
                                 <div className="col-sm-4">
-                                    <h4>{this.kelvinToCelcius(day.temp.day)}&deg;</h4>
+                                    <h4 style={this.styles.fontWeight4}>{this.kelvinToCelcius(day.temp.day)}&deg;</h4>
                                 </div>
                                 <div className="col-sm-8">
-                                    <p className="text-right mb-0">{this.kelvinToCelcius(day.temp.max)}&deg;</p>
+                                    <h6 className="text-right mb-0">{this.kelvinToCelcius(day.temp.max)}&deg;</h6>
                                     <GetIcon code={day.weather[0].id} />
-                                    <p className="text-right mb-0">{this.kelvinToCelcius(day.temp.min)}&deg;</p>
+                                    <h6 className="text-right mb-0">{this.kelvinToCelcius(day.temp.min)}&deg;</h6>
                                 </div>
                             </div>
                             <div className="text-center p-1">
@@ -97,7 +107,7 @@ class Dashboard extends Component {
                             <table className="table">
                                 <tbody>
                                     <tr>
-                                        <td>Humidity.</td>
+                                        <td>Humidity</td>
                                         <td>{day.humidity}%</td>
                                     </tr>
                                     <tr>
@@ -120,22 +130,22 @@ class Dashboard extends Component {
                 <div className="col-md-12">
                     <div className="row pt-2 mb-5">
                         <div className="col-md-3">
-                            <h3>{this.kelvinToCelcius(this.props.weather.current.temp)}&deg;C</h3>
-                            <h6>Feels Like: {this.kelvinToCelcius(this.props.weather.current.feels_like)}&deg;C</h6>
+                            <h2 style={this.styles.fontWeight4}>{this.kelvinToCelcius(this.props.weather.current.temp)}<sup style={{fontSize: 18, marginTop: -10}}>&deg; C</sup></h2>
+                            <h6 style={this.styles.style1}>Feels Like: {this.kelvinToCelcius(this.props.weather.current.feels_like)}&deg;C</h6>
                         </div>
                         <div className="col-md-3">
                             <div style={{marginTop: -30}}>
                                 <GetIcon code={this.props.weather.current.weather[0].id} />
                             </div>
-                            <h6>{this.props.weather.current.weather[0].description}</h6>
+                            <h6 style={this.styles.style1}>{this.capitalize(this.props.weather.current.weather[0].description)}</h6>
                         </div>
                         <div className="col-md-3">
-                            <h6>Humidity: {this.props.weather.current.humidity}%</h6>
-                            <h6>Wind: {this.meterSecToKiloHour(this.props.weather.current.wind_speed)} Km/h</h6>
+                            <h6 style={this.styles.style1}>Humidity: {this.props.weather.current.humidity}%</h6>
+                            <h6 style={this.styles.style1}>Wind Speed: {this.meterSecToKiloHour(this.props.weather.current.wind_speed)} Km/h</h6>
                         </div>
                         <div className="col-md-3 text-right">
-                            <h4>{this.state.city}</h4>
-                            <h5>{this.timeConverter(this.props.weather.current.dt)}</h5>
+                            <h4 style={this.styles.fontWeight4}>{this.state.city}</h4>
+                            <h5 style={this.styles.style1}>{this.timeConverter(this.props.weather.current.dt)}</h5>
                         </div>
                     </div>
                 </div>
