@@ -6,4 +6,4 @@ User have to select city name in order to get weather forecast of the specific c
 Technical Description:
 This applications backend built with django, django-rest-framework, django-rest-knox, sqlite3. 
 Frontend built react, react-dom, redux, react-redux, redux-thunk, react-router-dom, axios, react-spinners, prop-types.
-This application uses OpenWeatherMap API to provide weather forecast data. It uses One Call API of the OpenWeatherMap.
+This application uses OpenWeatherMap API to provide weather forecast data. It uses 'One Call API' of the OpenWeatherMap.
